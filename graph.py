@@ -40,3 +40,8 @@ workflow.add_conditional_edges(
     route_after_agent, 
     {"tools": "tools", "end": END}
 )
+# Go back to the agent after executing a tool
+workflow.add_edge("tools", "agent")
+
+# Compile the final graph
+graph = workflow.compile()
