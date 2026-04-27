@@ -16,3 +16,10 @@ def route_after_agent(state: AgentState) -> str:
     if hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
         return "tools"
     return "end"
+
+workflow = StateGraph(AgentState)
+
+# Add all nodes to the graph
+workflow.add_node("escalation_check", escalation_check_node)
+workflow.add_node("agent", agent_node)
+workflow.add_node("tools", tool_node)
