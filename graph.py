@@ -23,3 +23,20 @@ workflow = StateGraph(AgentState)
 workflow.add_node("escalation_check", escalation_check_node)
 workflow.add_node("agent", agent_node)
 workflow.add_node("tools", tool_node)
+
+# Define the execution flow (Edges)
+workflow.add_edge(START, "escalation_check")
+
+# Conditional routing after checking escalation
+workflow.add_conditional_edges(
+    "escalation_check", 
+    route_after_escalation, 
+    {"agent": "agent", "end": END}
+)
+
+# Conditional routing after the agent's turn
+workflow.add_conditional_edges(
+    "agent", 
+    route_after_agent, 
+    {"tools": "tools", "end": END}
+)
